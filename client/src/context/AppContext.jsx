@@ -91,9 +91,10 @@ export const AppContextProvider = ({ children }) => {
   };
 
   // ✅ get total cart count
-  const getCartCount = () =>
-    Object.values(cartItem).reduce((sum, qty) => sum + qty, 0);
-
+ const getCartCount = () => {
+  if (!cartItem || typeof cartItem !== "object") return 0;
+  return Object.values(cartItem).reduce((sum, qty) => sum + qty, 0) || 0;
+};
   // ✅ get cart total amount
   const getCartAmount = () => {
     let totalAmount = 0;

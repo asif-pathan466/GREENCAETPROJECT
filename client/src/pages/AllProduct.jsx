@@ -5,7 +5,7 @@ import ProductCart from "../component/ProductCart";
 const AllProduct = () => {
   const { products, searchQuery } = useAppContext();
   const [filteredProducts, setFilteredProduct] = useState([]);
- console.log(searchQuery)
+
   useEffect(() => {
     if (searchQuery.length > 0) {
       setFilteredProduct(
@@ -34,7 +34,7 @@ const AllProduct = () => {
       <ProductCart key={index} product={product} />
     ))}
 </div>
-
+      
     </div>
   );
 };
