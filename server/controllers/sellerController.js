@@ -6,6 +6,10 @@ export const sellerLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: "Email and password required" });
+    }
+
     if (password === process.env.SELLER_PASSWORD && email === process.env.SELLER_EMAIL) {
       const token = jwt.sign(
         { email, role: "seller" },
@@ -25,25 +29,28 @@ export const sellerLogin = async (req, res) => {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
   } catch (error) {
-    console.error(error.message);
+    console.error("sellerLogin error:", error.message);
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 
  // seller is-auth: /api/seller/is-auth
-
- export const isSellerAuth = async (req, res) => {
-   try {
-   
-      
-     return res.json({success: true});
-
-   } catch (error) {
-     console.log("users controller file",error.message);
-     res.status(500).json({ success: false, message: error.message });
-   }
- };
+export const isSellerAuth = async (req, res) => {
+  try {
+    // If authSeller passed, seller is authenticated
+    return res.json({
+      success: true,
+      message: "Seller is authenticated",
+      sellerId: req.seller?.id,
+    });
+  } catch (error) {
+    console.error("isSellerAuth error:", error.message);
+    res
+      .status(500)
+      .json({ success: false, message: error.message });
+  }
+};
 
 
  //seller logout: /api/seller/logout

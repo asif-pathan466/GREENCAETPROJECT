@@ -1,28 +1,16 @@
-import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String, 
-      required: true,
-    },
-    email: {
-      type: String, 
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String, 
-      required: true,
-    },
-    cartItem: {
-      type: Object,
-      default: {},
-    },
-  },
-  { minimize: false }
-);
+ const authSeller = (req, res, next) => {
+  try {
+    const token = req.cookies.sellerToken;
+    if (!token) return res.status(401).json({ success: false, message: "Not authorized" });
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.seller = decoded; // decoded contains { email, role }
+    next();
+  } catch (error) {
+    return res.status(401).json({ success: false, message: "Invalid token" });
+  }
+};
 
-export default User;
+export default authSeller;
