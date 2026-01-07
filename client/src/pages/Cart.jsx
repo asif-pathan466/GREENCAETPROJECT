@@ -97,6 +97,7 @@ const Cart = () => {
   const total = cartAmount + tax;
 
   return (
+    
     <div className="flex flex-col md:flex-row mt-16">
       {/* LEFT SIDE - CART ITEMS */}
       <div className="flex-1 max-w-4xl">

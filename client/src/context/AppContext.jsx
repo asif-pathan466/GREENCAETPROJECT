@@ -17,9 +17,9 @@ export const AppContextProvider = ({ children }) => {
   const [showUserLogin, setShowUserLogin] = useState(false);
   const [products, setProducts] = useState([]);
   const [cartItem, setCartItem] = useState({});
-  const [searchQuery, setSearchQuery] = useState(""); // ✅ should be string, not {}
+  const [searchQuery, setSearchQuery] = useState(""); // should be string, not {}
 
-  // ✅ fetch seller status
+  // fetch seller status
   const fetchSeller = async () => {
     try {
       const { data } = await axios.get("/api/seller/is-auth");
@@ -29,7 +29,7 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  // ✅ fetch user auth status (user data + cart)
+  // fetch user auth status (user data + cart)
   const fetchUser = async () => {
     try {
       const { data } = await axios.get("/api/user/is-auth");
@@ -44,7 +44,7 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  // ✅ fetch all products
+  //  fetch all products
   const fetchProducts = async () => {
     try {
       const { data } = await axios.get("/api/product/list");
@@ -58,7 +58,7 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  // ✅ add product to cart
+  //  add product to cart
   const addToCart = (itemId) => {
     let cartData = structuredClone(cartItem);
     cartData[itemId] = (cartData[itemId] || 0) + 1;
@@ -67,7 +67,7 @@ export const AppContextProvider = ({ children }) => {
     toast.success("Added to cart");
   };
 
-  // ✅ update cart item quantity
+  //  update cart item quantity
   const updateCartItem = (itemId, quantity) => {
     let cartData = structuredClone(cartItem);
     if (quantity > 0) {
@@ -79,7 +79,7 @@ export const AppContextProvider = ({ children }) => {
     toast.success("Cart updated");
   };
 
-  // ✅ remove item from cart
+  //  remove item from cart
   const removeCartItem = (itemId) => {
     let cartData = structuredClone(cartItem);
     if (cartData[itemId]) {
@@ -90,12 +90,12 @@ export const AppContextProvider = ({ children }) => {
     toast.success("Removed from cart");
   };
 
-  // ✅ get total cart count
+  //  get total cart count
  const getCartCount = () => {
   if (!cartItem || typeof cartItem !== "object") return 0;
   return Object.values(cartItem).reduce((sum, qty) => sum + qty, 0) || 0;
 };
-  // ✅ get cart total amount
+  //  get cart total amount
   const getCartAmount = () => {
     let totalAmount = 0;
     for (const itemId in cartItem) {
@@ -104,17 +104,17 @@ export const AppContextProvider = ({ children }) => {
         totalAmount += itemInfo.offerPrice * cartItem[itemId];
       }
     }
-    return Math.round(totalAmount * 100) / 100; // ✅ safe rounding
+    return Math.round(totalAmount * 100) / 100; // safe rounding
   };
 
-  // ✅ initial fetches
+  //  initial fetches
   useEffect(() => {
     fetchUser();
     fetchSeller();
     fetchProducts();
   }, []);
 
-  // ✅ sync cart with DB
+  // sync cart with DB
   useEffect(() => {
     const updateCart = async () => {
       try {
@@ -130,7 +130,7 @@ export const AppContextProvider = ({ children }) => {
     if (user) {
       updateCart();
     }
-  }, [cartItem, user]); // ✅ also depend on `user`
+  }, [cartItem, user]); //  also depend on `user`
 
   const value = {
     navigate,
