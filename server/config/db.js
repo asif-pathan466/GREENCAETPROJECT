@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 
-const connectDB = async () => {
-    try {
-        mongoose.connection.on('connected', () => console.log("database connected")
-    )
-    await mongoose.connect(`${process.env.MONGODB_URI}/greencart`)
-    } catch (error) {
-        console.log('database is not connected',error.message)
-    }
-}
-
-export default connectDB
+export const connectDB = async () => {
+  try {
+    // Pass the options object as the second argument
+    await mongoose.connect(process.env.MONGODB_URI, {
+      
+    }); 
+    
+    console.log("✅ Database connected successfully to greencart");
+  } catch (err) {
+    console.error("❌ Database connection error:", err.message);
+    process.exit(1);
+  }
+};
